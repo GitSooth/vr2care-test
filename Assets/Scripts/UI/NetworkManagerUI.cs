@@ -40,24 +40,6 @@ public class NetworkManagerUI : NetworkBehaviour
         });
     }
 
-    // void Start()
-    // {
-    //     if (PlayerData.Instance == null)
-    //     {
-    //         playerNameInput.GetComponent<Image>().color = Color.gray;
-    //         playerNameInput.enabled = false;
-    //         playerNameInput.text = PlayerData.Instance.payload.playerName;
-
-    //         avatarUrlInput.GetComponent<Image>().color = Color.gray;
-    //         avatarUrlInput.enabled = false;
-    //         avatarUrlInput.text = PlayerData.Instance.payload.avatarUrl;
-
-    //         joinCodeInput.GetComponent<Image>().color = Color.gray;
-    //         joinCodeInput.enabled = false;
-    //         joinCodeInput.text = PlayerData.Instance.payload.joinCode;
-    //     }
-    // }
-
     public void UpdateClientData()
     {
         if (NetworkManager.Singleton != null)
@@ -77,15 +59,3 @@ public class NetworkManagerUI : NetworkBehaviour
         SceneManager.LoadScene(0);
     }
 }
-
-
-/*
-
- if (NetworkManager.Singleton.IsServer)
- {
-     GameObject player = Instantiate(playerPrefab);
-     player.transform.position = positions[NetworkManager.LocalClientId].position;
-     player.transform.rotation = positions[NetworkManager.LocalClientId].rotation;
-     player.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId, false);
- }
-*/

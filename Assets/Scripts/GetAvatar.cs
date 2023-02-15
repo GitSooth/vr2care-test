@@ -9,7 +9,7 @@ public class GetAvatar : NetworkBehaviour
 
     [SerializeField] GameObject avatar;
     private readonly NetworkVariable<NetworkString> avatarUrl_nw = new();
-    private readonly NetworkVariable<NetworkString> playerName_nw = new();
+    //private readonly NetworkVariable<NetworkString> playerName_nw = new();
     private bool avatarLoaded;
     [SerializeField] private GameObject parentRef;
 
@@ -18,6 +18,22 @@ public class GetAvatar : NetworkBehaviour
         avatarLoaded = false;
     }
 
+    private void FixedUpdate()
+    {
+        if (avatarLoaded) { return; }
+        else
+        {
+            if (avatarUrl == null) { return; }
+
+            if (!GetAvatarUrl().Equals(avatarUrl))
+            {
+                avatarUrl = GetAvatarUrl();
+            }
+
+            StartLoadAvatar(GetAvatarUrl());
+            avatarLoaded = true;
+        }
+    }
     public override void OnDestroy()
     {
         if (avatar != null) Destroy(avatar);
@@ -33,33 +49,40 @@ public class GetAvatar : NetworkBehaviour
         base.OnNetworkSpawn();
     }
 
-    private void FixedUpdate()
-    {
-        if (avatarLoaded) return;
-        else
-        {
-            if (avatarUrl == null) return;
-
-            if (!GetAvatarUrl().Equals(avatarUrl))
-                avatarUrl = GetAvatarUrl();
-        }
-
-        StartLoadAvatar(GetAvatarUrl());
-        avatarLoaded = true;
-    }
-
-    private string GetAvatarUrl()
-    {
-        return avatarUrl_nw.Value;
-    }
-
     public void SetAvatarUrl(string _avatarUrl)
     {
         avatarUrl = _avatarUrl;
         avatarUrl_nw.Value = _avatarUrl;
     }
+    private string GetAvatarUrl()
+    {
+        return avatarUrl_nw.Value;
+    }
 
     private void StartLoadAvatar(string loadAvatarUrl)
+    {
+        ApplicationData.Log();
+
+        var avatarLoader = new AvatarLoader();
+        avatarLoader.OnCompleted += (_, args) =>
+        {
+            avatar = args.Avatar;
+
+            if (parentRef.name == loadAvatarUrl)
+            {
+                avatar.transform.parent = transform;
+                avatar.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            }
+
+            parentRef.name = "ParentRef";
+            Debug.Log("DFW2DDGWFHGWFEGDFGWDFG");
+        };
+        avatarLoader.LoadAvatar(loadAvatarUrl);
+
+        parentRef.name = loadAvatarUrl;
+    }
+
+    /*private void StartLoadAvatar(string loadAvatarUrl)
     {
         var avatarLoader = new AvatarLoader();
         avatarLoader.OnCompleted += (_, args) =>
@@ -78,6 +101,5 @@ public class GetAvatar : NetworkBehaviour
         avatarLoader.LoadAvatar(loadAvatarUrl);
 
         parentRef.name = loadAvatarUrl;
-
-    }
+*/
 }
