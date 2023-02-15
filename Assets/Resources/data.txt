@@ -1,0 +1,4 @@
+Joao
+https://api.readyplayer.me/v1/avatars/6390861742cc7ea2606e58f7.glb
+https://api.readyplayer.me/v1/avatars/63908ed6f3369eef547f9707.glb
+https://api.readyplayer.me/v1/avatars/63861b082f6a3a45365b966e.glb
