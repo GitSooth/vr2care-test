@@ -17,7 +17,7 @@ public class NetworkManagerUI : NetworkBehaviour
     public TMP_InputField avatarUrlInput;
     public TMP_InputField joinCodeInput;
 
-    int i = 0;
+    int i = -1;
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public class NetworkManagerUI : NetworkBehaviour
             PlayerData.Instance.payload.playerName = playerNameInput.text;
             PlayerData.Instance.payload.avatarUrl = avatarUrlInput.text;
             PlayerData.Instance.payload.joinCode = joinCodeInput.text;
-            PlayerData.Instance.payload.playerIndex = -1;
+            PlayerData.Instance.payload.playerIndex = ++i;
         }
 
         SceneManager.LoadScene(0);

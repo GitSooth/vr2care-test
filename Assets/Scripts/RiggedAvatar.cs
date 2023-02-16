@@ -3,54 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using NuitrackSDK;
 using NuitrackSDK.Calibration;
+using Unity.Netcode;
 
-public class RiggedAvatar : MonoBehaviour
+public class RiggedAvatar : NetworkBehaviour
 {
     [Header("Rigged model")]
     [SerializeField]
-    List<ModelJoint> modelJoints;
+    public List<ModelJoint> modelJoints;
     [SerializeField]
     nuitrack.JointType rootJoint = nuitrack.JointType.LeftCollar;
     /// <summary> Model bones </summary>
-    Dictionary<nuitrack.JointType, ModelJoint> jointsRigged = new Dictionary<nuitrack.JointType, ModelJoint>();
+    public Dictionary<nuitrack.JointType, ModelJoint> jointsRigged = new Dictionary<nuitrack.JointType, ModelJoint>();
     NuitrackSetup setup;
+
+    public bool ready = false;
 
     void Start()
     {
-        setup = GetComponent<NuitrackSetup>();
+        // setup = GetComponent<NuitrackSetup>();
 
-        modelJoints = new List<ModelJoint>();
+        // modelJoints = new List<ModelJoint>();
 
-        for (int i = 0; i < setup.bones.Length; i++)
-        {
-            ModelJoint mj = new ModelJoint();
+        // for (int i = 0; i < setup.bones.Length; i++)
+        // {
+        // ModelJoint mj = new ModelJoint();
 
-            mj.bone = setup.bones[i];
-            modelJoints.Add(mj);
-        }
+        // mj.bone = setup.bones[i];
+        // modelJoints.Add(mj);
+        // }
 
-        modelJoints[0].jointType = nuitrack.JointType.Torso;
-        modelJoints[1].jointType = nuitrack.JointType.LeftCollar;
-        modelJoints[2].jointType = nuitrack.JointType.RightCollar;
-        modelJoints[3].jointType = nuitrack.JointType.LeftShoulder;
-        modelJoints[4].jointType = nuitrack.JointType.RightShoulder;
-        modelJoints[5].jointType = nuitrack.JointType.LeftElbow;
-        modelJoints[6].jointType = nuitrack.JointType.RightElbow;
-        modelJoints[7].jointType = nuitrack.JointType.LeftHip;
-        modelJoints[8].jointType = nuitrack.JointType.RightHip;
-        modelJoints[9].jointType = nuitrack.JointType.LeftKnee;
-        modelJoints[10].jointType = nuitrack.JointType.RightKnee;
+        // modelJoints[0].jointType = nuitrack.JointType.Torso;
+        // modelJoints[1].jointType = nuitrack.JointType.LeftCollar;
+        // modelJoints[2].jointType = nuitrack.JointType.RightCollar;
+        // modelJoints[3].jointType = nuitrack.JointType.LeftShoulder;
+        // modelJoints[4].jointType = nuitrack.JointType.RightShoulder;
+        // modelJoints[5].jointType = nuitrack.JointType.LeftElbow;
+        // modelJoints[6].jointType = nuitrack.JointType.RightElbow;
+        // modelJoints[7].jointType = nuitrack.JointType.LeftHip;
+        // modelJoints[8].jointType = nuitrack.JointType.RightHip;
+        // modelJoints[9].jointType = nuitrack.JointType.LeftKnee;
+        // modelJoints[10].jointType = nuitrack.JointType.RightKnee;
 
-        foreach (ModelJoint mj in modelJoints)
-        {
-            mj.baseRotOffset = mj.bone.rotation;
-            jointsRigged.Add(mj.jointType.TryGetMirrored(), mj);
-        }
+        // foreach (ModelJoint mj in modelJoints)
+        // {
+        // mj.baseRotOffset = mj.bone.rotation;
+        // jointsRigged.Add(mj.jointType.TryGetMirrored(), mj);
+        // }
     }
 
     void Update()
     {
-        if (NuitrackManager.Users.Current != null && NuitrackManager.Users.Current.Skeleton != null)
+        if (NuitrackManager.Users.Current != null && NuitrackManager.Users.Current.Skeleton != null && ready)
             ProcessSkeleton(NuitrackManager.Users.Current.Skeleton);
     }
 

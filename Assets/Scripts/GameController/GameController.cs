@@ -84,6 +84,8 @@ public class GameController : NetworkBehaviour
         {
             StartingHost();
         }
+
+        ResetPlayerPos();
     }
 
     private void SpawnPlayerAndPort(ulong clientId)
@@ -168,5 +170,24 @@ public class GameController : NetworkBehaviour
         // If additional approval steps are needed, set this to true until the additional steps are complete
         // once it transitions from true to false the connection approval response will be processed.
         response.Pending = false;
+    }
+
+    public void ResetPlayerPos()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.GetComponent<NetworkObject>().IsOwner)
+            {
+                player.transform.position = positions[0].position;
+                player.transform.rotation = positions[0].rotation;
+
+                //playerInstance.transform.position = positions[clientId].position;
+                //playerInstance.transform.rotation = positions[clientId].rotation;
+
+                player.transform.position = new Vector3(player.transform.position.x, 0.52f, player.transform.position.z);
+                break;
+            }
+        }
     }
 }
