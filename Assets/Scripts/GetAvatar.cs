@@ -76,6 +76,7 @@ public class GetAvatar : NetworkBehaviour
 
             parentRef.name = "ParentRef";
             Debug.Log("DFW2DDGWFHGWFEGDFGWDFG");
+            setup = gameObject.AddComponent<NuitrackSetup>();
         };
         avatarLoader.LoadAvatar(loadAvatarUrl);
 
